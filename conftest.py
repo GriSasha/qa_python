@@ -16,3 +16,7 @@ def child_books():
 def adult_books():
     adult_books = ['Шерлок', 'Вий']
     return adult_books
+
+@pytest.fixture
+def collector():
+    return BooksCollector()

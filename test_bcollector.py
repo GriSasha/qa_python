@@ -10,9 +10,8 @@ class TestBooksCollector:
     # обязательно указывать префикс test_
     # дальше идет название метода, который тестируем add_new_book_
     # затем, что тестируем add_two_books - добавление двух книг
-    def test_add_new_book_add_two_books(self, book):
+    def test_add_new_book_add_two_books(self, collector, book):
         # создаем экземпляр (объект) класса BooksCollector
-        collector = BooksCollector()
 
         # добавляем две книги
         collector.add_new_book(book[0])
@@ -25,18 +24,14 @@ class TestBooksCollector:
     # напиши свои тесты ниже
     # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
 
-    def test_add_new_book_add_book_with_fifty_symbols(self):
-        
-        collector = BooksCollector()
+    def test_add_new_book_add_book_with_fifty_symbols(self, collector):
 
         collector.add_new_book('Когда на небе полная луна, в лесу можно услышать в')
 
         assert len(collector.get_books_genre()) == 0
 
     @pytest.mark.parametrize('name, genre', [['Шерлок', 'Детективы'], ['Оно', 'Ужасы']])
-    def test_set_book_genre_set_exist_genre(self, name, genre):
-
-        collector = BooksCollector()
+    def test_set_book_genre_set_exist_genre(self, collector, name, genre):
 
         collector.add_new_book(name)
         collector.set_book_genre(name, genre)
@@ -44,9 +39,7 @@ class TestBooksCollector:
         assert len(collector.get_book_genre(name)) != 0
 
     @pytest.mark.parametrize('name, genre', [['Шерлок', 'Медицина'], ['Оно', 'Клоуны']])
-    def test_set_book_genre_set_not_exist_genre(self, name, genre):
-
-        collector = BooksCollector()
+    def test_set_book_genre_set_not_exist_genre(self, collector, name, genre):
 
         collector.add_new_book(name)
         collector.set_book_genre(name, genre)
@@ -55,18 +48,14 @@ class TestBooksCollector:
 
 
     @pytest.mark.parametrize('name, genre', [['Шерлок', 'Детективы'], ['Оно', 'Ужасы']])
-    def test_get_books_with_specific_genre_get_exist_genre(self, name, genre):
-
-        collector = BooksCollector()
+    def test_get_books_with_specific_genre_get_exist_genre(self, collector, name, genre):
 
         collector.add_new_book(name)
         collector.set_book_genre(name, genre)
 
         assert name in collector.get_books_with_specific_genre(genre)
 
-    def test_get_books_for_children_get_allowed_genre(self, child_books):
-
-        collector = BooksCollector()
+    def test_get_books_for_children_get_allowed_genre(self, collector, child_books):
 
         collector.add_new_book(child_books[0])
         collector.add_new_book(child_books[1])
@@ -75,9 +64,7 @@ class TestBooksCollector:
 
         assert collector.get_books_for_children() == child_books
     
-    def test_get_books_for_children_get_banned_genre(self, adult_books):
-
-        collector = BooksCollector()
+    def test_get_books_for_children_get_banned_genre(self, collector, adult_books):
 
         collector.add_new_book(adult_books[0])
         collector.add_new_book(adult_books[1])
@@ -87,8 +74,7 @@ class TestBooksCollector:
         assert len(collector.get_books_for_children()) == 0
 
 
-    def test_add_book_in_favorites_book_added(self, book):
-        collector = BooksCollector()
+    def test_add_book_in_favorites_book_added(self, collector, book):
 
         collector.add_new_book(book[0])
         collector.add_new_book(book[1])
@@ -98,9 +84,7 @@ class TestBooksCollector:
         assert book == collector.get_list_of_favorites_books()
 
     @pytest.mark.parametrize('name', ['Оно', 'Муму'])
-    def test_add_book_in_favorites_book_copy_not_added(self, name):
-        collector = BooksCollector()
-
+    def test_add_book_in_favorites_book_copy_not_added(self, collector, name):
         collector.add_new_book(name)
         collector.add_book_in_favorites(name)
         collector.add_book_in_favorites(name)
@@ -108,8 +92,7 @@ class TestBooksCollector:
         assert len(collector.get_list_of_favorites_books()) == 1
 
     @pytest.mark.parametrize('name', ['Оно', 'Муму', 'Шатура'])
-    def test_delete_book_from_favorites_book_deleted(self, name):
-        collector = BooksCollector()
+    def test_delete_book_from_favorites_book_deleted(self, collector, name):
 
         collector.add_new_book(name)
         collector.add_book_in_favorites(name)
