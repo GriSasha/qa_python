@@ -5,6 +5,8 @@ import pytest
 book = ['Оно']
 genre = ['Детектив']
 book_genre = [('Оно', 'Детективы')]
+books_allow_border = ['А', 'Аа', 'Тайна старого замка на холме у реки тут', 'Тайна старого замка на холме у реки тутъ']
+books_not_allow_border = ['', 'Тайна старого замка на холме у реки тутъъ', 'Когда на небе полная луна, в лесу можно услышать в']
 
 # класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
 # обязательно указывать префикс Test
@@ -28,11 +30,18 @@ class TestBooksCollector:
     # напиши свои тесты ниже
     # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
 
-    def test_add_new_book_add_book_with_fifty_symbols(self, collector):
+    @pytest.mark.parametrize('border', books_not_allow_border)
+    def test_add_new_book_chek_not_allowed_borders(self, collector, border):
 
-        collector.add_new_book('Когда на небе полная луна, в лесу можно услышать в')
+        collector.add_new_book(border)
 
         assert len(collector.get_books_genre()) == 0
+
+    @pytest.mark.parametrize('border', books_allow_border)
+    def test_add_new_book_check_books_allow_borders(self, collector, border):
+
+        collector.add_new_book(border)
+        assert border in collector.get_books_genre()
 
     @pytest.mark.parametrize('name, genre', book_genre)
     def test_set_book_genre_set_exist_genre(self, collector, name, genre):
