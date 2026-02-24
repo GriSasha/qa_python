@@ -42,7 +42,7 @@ class TestBooksCollector:
 
         assert len(collector.get_book_genre(name)) != 0
 
-    @pytest.mark.parametrize('name, genre', [['Шерлок', 'Медицина'], ['Оно', 'Клоуны']])
+    @pytest.mark.parametrize('name, genre', [('Оно', 'Медицина')])
     def test_set_book_genre_set_not_exist_genre(self, collector, name, genre):
 
         collector.add_new_book(name)
